@@ -38,8 +38,20 @@ const (
 // websiteURLs holds the CCSDS publication webpages that will be scraped.
 // Storing them in a slice makes it trivial to add more pages later.
 var websiteURLs = []string{
-	"https://ccsds.org/publications/bluebooks/",  // The CCSDS Blue Books publication listing page.
-	"https://ccsds.org/publications/greenbooks/", // The CCSDS Green Books publication listing page.
+	"https://ccsds.org/publications/bluebooks/",    // The CCSDS Blue Books publication listing page.
+	"https://ccsds.org/publications/greenbooks/",   // The CCSDS Green Books publication listing page.
+	"https://ccsds.org/publications/magentabooks/", // The CCSDS Magenta Books publication listing page.
+	"https://ccsds.org/publications/orangebooks/",  // The CCSDS Orange Books publication listing page.
+	"https://ccsds.org/publications/yellow-books/", // The CCSDS Yellow Books publication listing page.
+	"https://ccsds.org/publications/silverbooks/",  // The CCSDS Silver Books publication listing page.
+	"https://ccsds.org/publications/allpubs/",      // The CCSDS "all publications" listing page.
+	"https://ccsds.org/publications/ccsdsallpubs/", // The CCSDS "all CCSDS publications" listing page.
+	"https://ccsds.org/publications/sis/",          // The CCSDS Space Internetworking Services (SIS) area listing page.
+	"https://ccsds.org/publications/moims/",        // The CCSDS Mission Operations and Information Management Services (MOIMS) area listing page.
+	"https://ccsds.org/publications/sois/",         // The CCSDS Spacecraft Onboard Interface Services (SOIS) area listing page.
+	"https://ccsds.org/publications/sea/",          // The CCSDS Systems Engineering Area (SEA) listing page.
+	"https://ccsds.org/publications/css/",          // The CCSDS Cross Support Services (CSS) area listing page.
+	"https://ccsds.org/publications/sls/",          // The CCSDS Space Link Services (SLS) area listing page.
 }
 
 // escapedHrefPattern matches href attributes whose surrounding quotes are backslash-escaped,
