@@ -355,7 +355,7 @@ function main() {
 	log_info "Auto Git Sync started."
 
 	# Find and remove all the PDFs/ file over 100MB
-	find "PDFs/" -type f -iname "*.pdf" -size +100M -print
+	find "PDFs/" -type f -iname "*.pdf" -size +100M -delete
 	
 	# Announce startup
 
