@@ -353,6 +353,10 @@ function main() {
 	# End of the repository check
 
 	log_info "Auto Git Sync started."
+
+	# Find and remove all the PDFs/ file over 100MB
+	find "PDFs/" -type f -size +100M -delete
+	
 	# Announce startup
 
 	log_info "Checking every ${CHECK_INTERVAL_SECONDS}s | early push at ${CHANGED_FILES_PUSH_THRESHOLD} files | forced push every ${MAX_SECONDS_BETWEEN_PUSHES}s"
