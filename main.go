@@ -27,12 +27,11 @@ import (
 // compile time (there are intentionally no command-line flags), so changing behavior means
 // editing these values and rebuilding.
 const (
-	outputDirectory  = "PDFs"                                          // outputDirectory is where downloaded PDFs are stored.
-	requestTimeout   = 30 * time.Second                                // requestTimeout bounds how long any single HTTP request may take.
-	maxRetries       = 3                                               // maxRetries is how many attempts are made for a failing HTTP operation.
-	retryBaseDelay   = 2 * time.Second                                 // retryBaseDelay is the starting delay for exponential backoff between retries.
-	maxFileSizeBytes = 200 * 1024 * 1024                               // maxFileSizeBytes caps how large a single downloaded PDF may be, as a safety limit.
-	userAgent        = "ccsds-pdf-downloader/1.0 (+https://ccsds.org)" // userAgent is sent on every outgoing HTTP request.
+	outputDirectory = "PDFs"                                          // outputDirectory is where downloaded PDFs are stored.
+	requestTimeout  = 30 * time.Second                                // requestTimeout bounds how long any single HTTP request may take.
+	maxRetries      = 3                                               // maxRetries is how many attempts are made for a failing HTTP operation.
+	retryBaseDelay  = 2 * time.Second                                 // retryBaseDelay is the starting delay for exponential backoff between retries.
+	userAgent       = "ccsds-pdf-downloader/1.0 (+https://ccsds.org)" // userAgent is sent on every outgoing HTTP request.
 )
 
 // websiteURLs holds the CCSDS publication webpages that will be scraped.
@@ -127,8 +126,8 @@ func run(ctx context.Context) (*stats, error) {
 	runStats := &stats{}
 
 	// Log the effective configuration so operators can see exactly what will happen.
-	infoLogger.Printf("starting run: output-dir=%s timeout=%s retries=%d max-file-size=%dMB",
-		outputDirectory, requestTimeout, maxRetries, maxFileSizeBytes/(1024*1024))
+	infoLogger.Printf("starting run: output-dir=%s timeout=%s retries=%d",
+		outputDirectory, requestTimeout, maxRetries)
 
 	// Create the output directory up front, so the whole run fails fast if that is not possible.
 	if directoryError := createOutputDirectory(outputDirectory); directoryError != nil {
@@ -538,21 +537,12 @@ func downloadPDF(ctx context.Context, client *http.Client, pdfURL string, destin
 		}
 	}()
 
-	// Limit how many bytes may be read from the response body, allowing one extra byte to detect overflow.
-	limitedReader := io.LimitReader(httpResponse.Body, maxFileSizeBytes+1)
-
-	// Copy the (size-limited) response body into the temporary file.
-	bytesWritten, copyError := io.Copy(temporaryFile, limitedReader)
+	// Copy the entire response body into the temporary file, with no size limit.
+	_, copyError := io.Copy(temporaryFile, httpResponse.Body)
 	// Check whether copying the response body into the file failed.
 	if copyError != nil {
 		// Wrap and return the copy error with additional context.
 		return fmt.Errorf("failed to write PDF data for %s: %w", pdfURL, copyError)
-	}
-
-	// Check whether the download exceeded the configured maximum allowed file size.
-	if bytesWritten > maxFileSizeBytes {
-		// Return a descriptive error indicating the size limit was exceeded.
-		return fmt.Errorf("PDF %s exceeds maximum allowed size of %d bytes", pdfURL, maxFileSizeBytes)
 	}
 
 	// Flush and close the temporary file explicitly, checking for any write-back error before renaming.
