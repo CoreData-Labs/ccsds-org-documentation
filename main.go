@@ -27,11 +27,11 @@ import (
 // compile time (there are intentionally no command-line flags), so changing behavior means
 // editing these values and rebuilding.
 const (
-	outputDirectory = "PDFs"                                          // outputDirectory is where downloaded PDFs are stored.
-	requestTimeout  = 30 * time.Second                                // requestTimeout bounds how long any single HTTP request may take.
-	maxRetries      = 3                                               // maxRetries is how many attempts are made for a failing HTTP operation.
-	retryBaseDelay  = 2 * time.Second                                 // retryBaseDelay is the starting delay for exponential backoff between retries.
-	userAgent       = "ccsds-pdf-downloader/1.0 (+https://ccsds.org)" // userAgent is sent on every outgoing HTTP request.
+	outputDirectory = "PDFs"                                                                                                           // outputDirectory is where downloaded PDFs are stored.
+	requestTimeout  = 30 * time.Second                                                                                                 // requestTimeout bounds how long any single HTTP request may take.
+	maxRetries      = 3                                                                                                                // maxRetries is how many attempts are made for a failing HTTP operation.
+	retryBaseDelay  = 2 * time.Second                                                                                                  // retryBaseDelay is the starting delay for exponential backoff between retries.
+	userAgent       = "Mozilla/5.0 (X11; CrOS x86_64 14541.0.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36" // userAgent is sent on every outgoing HTTP request.
 )
 
 // websiteURLs holds the CCSDS publication webpages that will be scraped.
